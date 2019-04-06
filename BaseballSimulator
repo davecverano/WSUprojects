@@ -1,0 +1,212 @@
+
+package baseball_simulator;
+//import java.util.Scanner;
+
+import java.util.ArrayList;
+
+/**
+ *
+ * @author Dave
+ */
+public class Baseball_Simulator {
+
+    //Driver Program
+    public static void main(String[] args) {
+        
+        //Scanner input = new Scanner(System.in);
+        
+        ArrayList<Batter> team1Batter = new ArrayList<Batter>();
+        ArrayList<Pitcher> team1Pitcher = new ArrayList<Pitcher>();
+        ArrayList<Batter> team2Batter = new ArrayList<Batter>();
+        ArrayList<Pitcher> team2Pitcher = new ArrayList<Pitcher>();
+        
+        
+        for(int i = 0;i<9;++i){
+         Pitcher pitcher = new Pitcher();
+         pitcher.setName("player " + (i+1) );
+         pitcher.setAverage(Math.random());
+         team1Pitcher.add(pitcher);
+        }
+         for(int i = 0;i<9;++i){
+         Pitcher pitcher = new Pitcher();
+         pitcher.setName("player " + (i+1) );
+         pitcher.setAverage(Math.random());
+         team2Pitcher.add(pitcher);
+        }  
+         for(int i = 0;i<100;++i){
+         Batter batter = new Batter();
+         batter.setName("player " + (char)(i+65) );
+         batter.setAverage(Math.random());
+         team1Batter.add(batter);
+        }
+         for(int i = 0;i<100;++i){
+         Batter batter = new Batter();
+         batter.setName("player " + (char)(i+65) );
+         batter.setAverage(Math.random());
+         team2Batter.add(batter);
+        }
+        /*String batterName = input.next();
+        String pitcherName = input.next();
+        double batterAvg = input.nextDouble();
+        double pitcherAvg = input.nextDouble();*/
+        
+        //Input for name and avg. Can use scanner for different names.
+        /*String batterName = "Squidward";
+        String pitcherName = "Gary";
+        double batterAvg = .5;
+        double pitcherAvg = .5;*/
+        
+        /*batter1.setName(batterName);
+        pitcher1.setName(pitcherName);
+        batter1.setAverage(batterAvg);
+        pitcher1.setAverage(pitcherAvg);  */    
+
+        int numberOfStrikes = 0;
+        int numberOfBalls = 0;
+        int inning = 1;
+        int runners = 0;
+        int team1pitcherNumber = 0;
+        int team1batterNumber = 0;
+        int team2pitcherNumber = 0;
+        int team2batterNumber = 0;
+        
+        
+        while(inning <10){
+            int outs = 0;
+            System.out.println("Inning " + inning);
+        if(inning%2==1){
+        while(outs<3){
+            numberOfStrikes = 0;
+            numberOfBalls = 0;
+        do{
+        System.out.println(team1Pitcher.get(team1pitcherNumber).getName() + " is pitching to " + team2Batter.get(team2batterNumber).getName());
+        if(team1Pitcher.get(team1pitcherNumber).pitch()){
+            if(team2Batter.get(team2batterNumber).hit()){
+                System.out.println(team2Batter.get(team2batterNumber).getName() + " got a hit!");
+                runners++;
+                team2batterNumber++;
+                break;
+            }
+            else{
+                numberOfStrikes++;
+                System.out.println(team2Batter.get(team2batterNumber).getName() + " swung and missed \nThe count is " + numberOfBalls + " balls and " + numberOfStrikes + " strikes");
+                team2batterNumber++;
+                if(numberOfStrikes==3){
+                    System.out.println(team2Batter.get(team2batterNumber).getName() + " struck out.");
+                    outs++;
+                }
+          
+            }
+        }
+        else{
+            numberOfBalls++;
+            System.out.println(team1Pitcher.get(team1pitcherNumber).getName() + " threw a ball\nThe count is " + numberOfBalls + " balls and " + numberOfStrikes + " strikes");
+            team2batterNumber++;
+                if(numberOfBalls==4){
+                    System.out.println(team1Pitcher.get(team1pitcherNumber).getName() + " walked.");
+                    runners++;
+                }
+                
+        }
+        }while(numberOfStrikes<3&&numberOfBalls<4);
+            System.out.println("There are " + outs + " outs and " + runners + " runners");
+        }
+        if(outs==3){
+            inning++;
+        }
+        }
+        else{
+        while(outs<3){
+            numberOfStrikes = 0;
+            numberOfBalls = 0;
+        do{
+        System.out.println(team2Pitcher.get(team2pitcherNumber).getName() + " is pitching to " + team1Batter.get(team1batterNumber).getName());
+        if(team2Pitcher.get(team2pitcherNumber).pitch()){
+            if(team1Batter.get(team1batterNumber).hit()){
+                System.out.println(team1Batter.get(team1batterNumber).getName() + " got a hit!");
+                runners++;
+                team1batterNumber++;
+                break;
+            }
+            else{
+                numberOfStrikes++;
+                System.out.println(team1Batter.get(team1batterNumber).getName() + " swung and missed \nThe count is " + numberOfBalls + " balls and " + numberOfStrikes + " strikes");
+                team1batterNumber++;
+                if(numberOfStrikes==3){
+                    System.out.println(team1Batter.get(team1batterNumber).getName() + " struck out.");
+                    outs++;
+                }
+          
+            }
+        }
+        else{
+            numberOfBalls++;
+            System.out.println(team2Pitcher.get(team2pitcherNumber).getName() + " threw a ball\nThe count is " + numberOfBalls + " balls and " + numberOfStrikes + " strikes");
+            team1batterNumber++;
+                if(numberOfBalls==4){
+                    System.out.println(team2Pitcher.get(team2pitcherNumber).getName() + " walked.");
+                    runners++;
+                }
+                
+        }
+        }while(numberOfStrikes<3&&numberOfBalls<4);
+            System.out.println("There are " + outs + " outs and " + runners + " runners");
+        }
+        if(outs==3){
+            inning++;
+        }
+        }
+        }
+    }
+    
+    
+    
+}
+    class Batter{
+       
+
+       private String name;
+       private double average;
+       
+
+       public void setName(String name){
+           this.name = name;
+       }
+       public void setAverage(double average){
+           this.average = average;
+       }
+       
+       public boolean hit(){
+
+           if(Math.random()<average){
+             return true;  
+           }
+               return false;
+       }
+
+       public String getName(){
+           return name;
+       }
+    }
+    class Pitcher{
+       private String name;
+       private double average;
+       public void setName(String name){
+           this.name = name;
+       }
+           public void setAverage(double average){
+           this.average = average;
+       }
+       public boolean pitch(){
+           if(Math.random()<average){
+             return true;  
+           }
+               return false;
+       }
+       public String getName(){
+           return name;
+       }
+       
+    }
+
+
