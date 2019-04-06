@@ -1,0 +1,142 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package arithmatic.quiz;
+import java.util.Scanner;
+/**
+ *
+ * @author Dave Verano
+ */
+public class Arithmatic_Quiz1 {
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        
+      
+      Scanner x = new Scanner(System.in);
+      int a = 0;                                 // User Option 1-6
+      double m = 0;                              // Keeps Track of Number of Questions Correct
+      double n = 0;                              // Tracks number of questions answered
+      
+      //Title Screen
+      System.out.println("Welcome to the Wright State School of Math!"); 
+      
+      //Loops if User did not enter six
+      while(a!=6){                                
+    
+      //Directions for Program or Menu
+      System.out.println("\nPlease choose one of the following options for your math quiz:" +  "\n1. Addition with numbers 1­10" +  "\n2. Addition with numbers 1­100" + "\n3. Subtraction with numbers 1­10" +
+        "\n4. Subtraction with numbers 1­100" + "\n5. Multiplication with numbers 1­10" + "\n6. Exit the program\n");
+      
+      //For Invalid Responses
+      a = x.nextInt();
+          System.out.print("\n");
+      if(a>6||a<1){
+          while((a>6||a<1)){
+          System.out.println("Valid choices are 1­6; please re­enter");    
+          a = x.nextInt();
+      }
+      }
+          
+      //Performs requested action for items(If statements 1-6)
+      if(a==1){
+          for(int i =0;i<5;++i){
+                    int b = (int)(1+ Math.random()*10);
+                    int c = (int)(1+ Math.random()*10);
+              System.out.println("Enter the answer to the following problem: " + b + " + " + c );
+              int a1 = x.nextInt(); //Answer for Question
+              if(a1== b + c){
+                  System.out.println("That is the correct answer!");
+                  m++;
+              }
+              else{
+                  System.out.println("Sorry, that is incorrect. The correct answer is " + (b + c));                 
+              }
+              n++;
+          }
+      }
+      if(a==2){
+          for(int i =0;i<5;++i){
+                    int b = (int)(1+ Math.random()*100);
+                    int c = (int)(1+ Math.random()*100);
+              System.out.println("Enter the answer to the following problem: " + b + " + " + c );
+              int a2 = x.nextInt(); //Answer for Question
+              if(a2== b + c){
+                  System.out.println("That is the correct answer!");
+                  m++;
+              }
+              else{
+                  System.out.println("Sorry, that is incorrect. The correct answer is " + (b + c));
+              }
+              n++;
+          }
+      }
+      if(a==3){
+          for(int i =0;i<5;++i){
+                    int b = (int)(1+ Math.random()*10);
+                    int c = (int)(1+ Math.random()*10);
+              System.out.println("Enter the answer to the following problem: " + b + " - " + c );
+              int a3 = x.nextInt(); //Answer for Question
+              if(a3== b - c){
+                  System.out.println("That is the correct answer!");
+                  m++;
+              }
+              else{
+                  System.out.println("Sorry, that is incorrect. The correct answer is " + (b - c));
+              }
+              n++;
+          }
+      }
+      if(a==4){
+          for(int i =0;i<5;++i){
+                    int b = (int)(1+ Math.random()*100);
+                    int c = (int)(1+ Math.random()*100);
+              System.out.println("Enter the answer to the following problem: " + b + " - " + c );
+              int a4 = x.nextInt(); //Answer for Question
+              if(a4== b - c){
+                  System.out.println("That is the correct answer!");
+                  m++;
+              }
+              else{
+                  System.out.println("Sorry, that is incorrect. The correct answer is " + (b - c));
+              }
+              n++;
+          }
+      }
+      if(a==5){
+         for(int i =0;i<5;++i){
+                    int b = (int)(1+ Math.random()*10);
+                    int c = (int)(1+ Math.random()*10);
+              System.out.println("Enter the answer to the following problem: " + b + "*" + c );
+              int a5 = x.nextInt(); //Answer for Question
+              if(a5== b * c){
+                  System.out.println("That is the correct answer!");
+                  m++;
+              }
+              else{
+                  System.out.println("Sorry, that is incorrect. The correct answer is " + (b * c));
+              }
+              n++;
+          } 
+      }
+      if(a==6){
+          //If user has done some questions
+          if(n>0){
+          double percent = (m/n) * 100; //Percent the User has gotten right
+        
+          System.out.printf("You got %.0f problems correct out of %.0f problems attempted. That is %.2f percent correct. Goodbye!\n",m,n,percent);
+      }
+          //If user has not done any questions
+          if(n==0){
+              System.out.println("You've answered 0 problems. Goodbye!");
+          }
+    }
+    }
+}
+}
+
+
