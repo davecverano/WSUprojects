@@ -1,0 +1,214 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package caesarcipher;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
+
+/**
+ *
+ * @author Dave
+ */
+public class CaesarCipher {
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) throws IOException{
+       //While loop for method. Will only break if return of getMenuOption is 3.
+       while(true){
+        switch(getMenuOption()){
+            //encrypt case        
+            case 1:
+            
+                /*Not sure if initizalizing in the main is allowed. I did this to end the
+            program as soon as an invalid user input is given. An alternative if 
+            initializing isn't allowed is to not initialize filetxt and place 
+            filetxtIn() into the encrypt() parameter, but you would have to 
+            enter a key even though the file is invalid. In my answer, you can
+            return to the menu without asking a key input. Encrypt(filetxtIn(),key())*/
+            File filetxt = filetxtIn();
+            
+            //Decides if File is valid and returns to menu if it isnt.
+            if(isNottxtFile(filetxt)){
+                continue;
+            }
+            //calls encrypt
+            encrypt(filetxt,key());             
+            continue;
+            
+            //decrypt case
+            case 2:
+            File fileenc = fileencIn();
+            if(isNotencFile(fileenc)){
+                continue;
+            }
+            //calls decrypt
+            decrypt(fileenc,key());
+            continue;
+            case 3:
+        }
+        //breaks if it runs through 3.
+            break;
+    }
+    }
+    
+    //Menu Method
+    public static int getMenuOption(){
+        Scanner Scan = new Scanner(System.in);
+        
+        //Message of Menu
+        System.out.println("1. Encrypt \n2. Decrypt \n3. Quit \nWhat would you like to do?");
+        
+        //Asks for input
+        int in = Scan.nextInt();
+        
+        //if input is invalid
+        while(in>3||in<1){
+            System.out.println("The input entered is invalid. Please enter either 1, 2, or 3.");
+            in = Scan.nextInt();
+}
+        //returns a valid input
+        return in;
+            }
+    
+    
+    
+        public static void encrypt(File inputFile, int key) throws IOException{
+            try{    
+            //part of alternate solution
+            /*if(isNottxtFile(inputFile.getName())){
+                return;
+            }*/
+            Scanner fileReader = new Scanner(inputFile);
+            
+            /*Reads file with the string. Not sure if the program has multiple 
+            strings to encrypt so I just read 1 string instead of doing a 
+            .hasNext  */
+            String message = fileReader.next();
+            char messageLetter;
+            
+            //create array of characters
+            char encryptedLetters[] = new char[message.length()];
+            int letterToNumber;
+            String encryptedMessage = "";
+            
+            /* For loop takes individual characters of the array, turns them into Ascii 
+            values, adds it to the key, and turns the sum into an Ascii character.
+            */
+            for(int i = 0;i<message.length();++i){
+                messageLetter = message.charAt(i);
+                letterToNumber = (int)messageLetter + key;
+                encryptedLetters[i] = (char)letterToNumber;
+            }
+            
+            //turns the characters into a string
+            for(int i = 0;i<message.length();++i){
+            encryptedMessage = encryptedMessage + encryptedLetters[i];
+        }
+            fileReader.close();
+            
+            //turns the file's filename into string
+            String fileToString = inputFile.toString();
+            
+            //creates the new enc file with the .enc extention
+            String encFileName = fileToString.substring(0,fileToString.length()-4) + ".enc";
+            FileWriter filewriter = new FileWriter(encFileName);
+            filewriter.write(encryptedMessage);
+            filewriter.close();
+            
+            //Extra
+            }catch(FileNotFoundException e){
+                System.out.println("File not found error!!!");
+                //System.exit(0);
+            }
+        }
+        
+        //Copy and paste process ie. message into cipher encrypted into decrypted
+        public static void decrypt(File inputFile, int key) throws IOException{
+            try{
+            /*if(isNotencFile(inputFile.getName())){
+                return;
+            }*/
+            Scanner fileReader = new Scanner(inputFile);
+            //need try catch for inputs that are not strings
+            String cipher = fileReader.next();
+            char cipherLetter;
+            char decryptedLetters[] = new char[cipher.length()];
+            int letterToNumber;
+            String decryptedMessage = "";
+            for(int i = 0;i<cipher.length();++i){
+                cipherLetter = cipher.charAt(i);
+                letterToNumber = (int)cipherLetter - key;
+                decryptedLetters[i] = (char)letterToNumber;
+            }
+            for(int i = 0;i<cipher.length();++i){
+            decryptedMessage = decryptedMessage + decryptedLetters[i];
+        }
+            fileReader.close();
+            String fileToString = inputFile.toString();
+            String txtFileName = fileToString.substring(0,fileToString.length()-4) + ".txt";
+            FileWriter filewriter = new FileWriter(txtFileName);
+            filewriter.write(decryptedMessage);
+            filewriter.close();
+            }catch(FileNotFoundException e){
+                System.out.println("File not found error!!!");
+                //System.exit(0);
+            }
+        }
+        
+        //Extra Method that prompts user to input a txt file.
+        public static File filetxtIn(){
+            
+            System.out.println("Enter a .txt file");
+            Scanner keyboard = new Scanner(System.in);
+            String input = keyboard.next();
+            File fileName = new File(input);
+            return fileName;
+}
+        //Extra Method that prompts user to input an enc file.
+        public static File fileencIn(){
+            
+            System.out.println("Enter a .enc file");
+            Scanner keyboard = new Scanner(System.in);
+            String input = keyboard.next();
+            File fileName = new File(input);
+            return fileName;
+            
+}
+        //Extra Method that determines if the file has a txt extention. Returns true
+        //if it doesnt.
+        public static boolean isNottxtFile(File fileName){
+            String file = fileName.getName();
+            if(!file.endsWith(".txt")){
+                    System.out.println("Your program should have a .txt extention");
+                    return true;
+                }
+            return false;
+        }
+        //Extra Method that determines if the file has an enc extention. Returns true
+        //if it doesnt.
+        public static boolean isNotencFile(File fileName){
+            String file = fileName.getName();
+            if(!file.endsWith(".enc")){
+                    System.out.println("Your program should have a .enc extention");
+                    return true;
+                }
+            
+            return false;
+}
+        //Extra Method that asks for the key of the cipher
+        public static int key(){
+            Scanner keyboard = new Scanner(System.in);
+            System.out.println("Enter a key for the cipher");
+            int out = keyboard.nextInt();
+            return out;
+        }
+}
+
