@@ -1,0 +1,171 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package mazerunner;
+import java.util.Scanner;
+/**
+ *
+ * @author Dave
+ */
+public class MazeRunner {
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        
+        
+        //Prompts the user for number of rows and columns
+      Scanner keyboard = new Scanner(System.in);
+      System.out.print("How many rows are in the maze? ");
+      int mazeRows = keyboard.nextInt();     
+      System.out.print("How many columns are in the maze? ");
+      int mazeColumns = keyboard.nextInt();
+      
+      
+      //initializing double array of danger in each cell and list of already visited cells
+      int [][] maze = new int[mazeRows][mazeColumns];
+      String listOfPositions = "";
+      
+      
+      //Prompts danger level of each world
+      for(int i = 0;i<mazeRows;++i){
+          System.out.println("Enter the danger in row " + i + " , separated by spaces:");
+          for(int j = 0;j<mazeColumns;++j){
+              int danger = keyboard.nextInt();
+              maze[i][j] = danger;
+          }
+      }
+      
+      //Prompts user for start coordinates
+        System.out.println("Enter the starting x coordinate:");
+        int xpos = keyboard.nextInt();
+        System.out.println("Enter the starting y coordinate: ");
+        int ypos = keyboard.nextInt();
+        
+        //While loop of program and Stops when on the edges
+        listOfPositions += " " + "(" + ypos + "," + xpos + ")";
+        int Danger = 0;
+        int specialCase = 0;
+        while(ypos!=0||xpos!=mazeRows-1||xpos!=0||ypos!=mazeColumns-1){
+            int compareDanger = maze[xpos][ypos];
+            
+            //Displays the AI character's location
+            if(Danger != 0){
+                System.out.println("Moving to " + xpos + "," + ypos + " (danger level " + compareDanger + ")");
+            }
+            if(Danger==0){
+                Danger = compareDanger;
+            }
+            
+            //Prints out all danger location except AI character location which is denoted with *
+           for(int i = 0;i<mazeRows;++i){         
+          for(int j = 0;j<mazeColumns;++j){
+              if(!(i==xpos&&j==ypos)){
+              System.out.print(" " + maze[i][j]);
+              }
+              else{
+                  System.out.print(" *");    
+              }                              
+              }
+               System.out.print("\n");
+          }
+           
+           //Program continues if rows and columns not on the edges
+           if(ypos==0||xpos==mazeRows-1||xpos==0||ypos==mazeColumns-1){
+               break;
+           }
+            System.out.print("\n");
+            
+            //checks surrounding worlds if it has already been entered
+           boolean squareBeenTo1 = listOfPositions.contains("(" + (ypos+1) + "," + xpos + ")");
+           boolean squareBeenTo2 = listOfPositions.contains("(" + (ypos-1) + "," + xpos + ")");
+           boolean squareBeenTo3 = listOfPositions.contains("(" + ypos + "," + (xpos+1) + ")");
+           boolean squareBeenTo4 = listOfPositions.contains("(" + ypos + "," + (xpos-1) + ")"); 
+           
+           //starts checking if the world has a valid square to move
+           int posTrack = 0;
+           
+           /*decides on which square to check first so if adjacent worlds are equal
+           in danger it will go in order of 1 2 3 4*/
+           if(squareBeenTo1 == false){            
+           compareDanger = maze[xpos][ypos+1];
+           posTrack = 1;  
+           }
+           else if(squareBeenTo2==false){           
+           compareDanger = maze[xpos][ypos-1];
+           posTrack = 2; 
+        }
+           else if(squareBeenTo3==false){             
+           compareDanger = maze[xpos+1][ypos+1];
+           posTrack = 3; 
+        }
+           else if(squareBeenTo4==false){             
+           compareDanger = maze[xpos-1][ypos+1];
+           posTrack = 4; 
+        }
+           
+           //special case where there are no valid worlds
+           if(posTrack==0){
+               System.out.println("You're stuck in this world forever");
+               specialCase = 1;
+               break;
+           }
+           
+           //compares danger in all nearby worlds
+           if(compareDanger>maze[xpos][ypos+1]&&squareBeenTo1 == false){        
+               compareDanger = maze[xpos][ypos+1];
+               posTrack = 1;              
+           }
+           if(compareDanger>maze[xpos][ypos-1]&&squareBeenTo2 == false){        
+               compareDanger = maze[xpos][ypos-1];
+               posTrack = 2;              
+           }
+           if(compareDanger>maze[xpos+1][ypos]&&squareBeenTo3 == false){             
+                  compareDanger = maze[xpos+1][ypos];
+                  posTrack = 3;                
+               }
+           if(compareDanger>maze[xpos-1][ypos]&&squareBeenTo4 == false){
+               compareDanger = maze[xpos-1][ypos];
+               posTrack = 4;
+               }
+           
+           //AI charcter goes to world with least compareDanger 
+           if(posTrack == 1){
+             ypos++; 
+           }
+           if(posTrack == 2){
+            ypos--;  
+           }
+           if(posTrack == 3){
+            xpos++;   
+           }
+           if(posTrack == 4){
+            xpos--;  
+           }
+           
+           //Adds the danger you've encountered in the past
+           Danger = Danger + compareDanger;
+           
+           //Adds a new list of worlds encountered
+           listOfPositions += " " + "(" + ypos + "," + xpos + ")";
+           }
+        
+        //Displays position of character when it exits the world
+        if(specialCase==0){
+        System.out.println("Exited the World at " + xpos + "," + ypos);
+        System.out.println("Total Danger faced: " + Danger);
+        }
+        
+        //Dispays special case
+        else{
+            System.out.println("You did not escape");
+        }
+      } 
+        }
+    
+    
+
+
